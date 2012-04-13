@@ -4,7 +4,10 @@
 
 (defmacro describe [description & body]
   `(do
-    (let [description-key (keyword ~description)]
-      (def test-map (assoc test-map description-key {}))
-      (println test-map)
-      ~body)))
+    (def test-map (assoc test-map (keyword ~description) {}))
+    (println test-map)
+    ~body))
+
+(defmacro context [description & body]
+  `(do
+     ()))
