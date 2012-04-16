@@ -1,21 +1,31 @@
 (ns north.core)
+(use 'clojure.pprint)
+
 (set! *warn-on-reflection* true)
 
 (def ^:dynamic *features* [])
 (def ^:dynamic *contexts* [])
+(def ^:dynamic *tests* {})
 
 (defmacro describe [feature & body]
-  `(binding [*features* (conj *features* '~feature)]
+  `(binding [*features* (conj *features* '~feature)
+             *tests* *tests*]
      ~@body))
 
 
 (defmacro context [description & body]
   `(binding [*contexts* (conj *contexts* '~description)]
-     ~@body))
+     ~@body)
+  (println "Ending context")
+  (pprint *tests*))
 
 (defmacro it [description & body]
-  `(defn ~(symbol description) []
-     ~@body))
+  `(binding [*tests* 
+             (assoc *tests* ~(keyword description) 
+                    (fn []
+                      ~@body))]
+     (println "Ending it")
+     (pprint *tests*)))
 
 (defn should
   ([result matcher]
@@ -46,3 +56,7 @@
 
 (defn be-false [result]
   (be-equals result false))
+
+(defn run-specs []
+  (println "So we have all the tests: ")
+  (pprint *tests*))
