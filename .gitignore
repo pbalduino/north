@@ -8,3 +8,5 @@
 /.lein-deps-sum
 /.idea
 /*.iml
+/.classpath
+/.project
