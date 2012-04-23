@@ -3,15 +3,19 @@
 
 (set! *warn-on-reflection* true)
 
-(def north.core/run-specs #())
+(def run-specs #())
+(def ^:dynamic test-list {})
 
 (defmacro describe [feature & body]
   `(binding [*ns* (find-ns 'north.core)]
      (println *ns*)
      (eval 
        '(defn run-specs []
-          (println "running")
-          (~@body)))))
+          (binding [test-list (assoc test-list (str ~feature) {})]
+            (println "running")
+            (println test-list)
+            (~@body)
+            (println "finished"))))))
 
 (defmacro context [description & body]
   `(println "Ending context"))
