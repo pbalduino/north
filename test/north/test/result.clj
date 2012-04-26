@@ -25,8 +25,17 @@
 							:name "Another test" 
 							:fun #{println "Another test"})])]))
 
-(pprint tests)
-
-(pprint "-----------")
-
-(pprint (:context-list tests))
+(println (str "Feature: " (:name suite-struct)))
+(dorun
+	(map (fn [x]
+		(println (str "  Context: " (:name x)))
+		(println "  Tests:")
+		(dorun 
+			(map 
+				(fn [y] 
+					(println (str "    " (:name y)))
+					(println (str "    Executing:"))
+					((:fun y)))
+				(:test-list x)))
+		(println ""))
+	(:context-list tests)))
