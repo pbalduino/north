@@ -30,9 +30,11 @@ Installation
 - clone the git repository:
 +
 ---------------------------------------------------
-git clone git@github.com:pbalduino/north.git
-cd north
-lein install
+\git clone git@github.com:pbalduino/north.git
+
+\cd north
+
+\lein install
 ---------------------------------------------------
 
 - add in your +project.clj+:
