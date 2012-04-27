@@ -23,16 +23,24 @@ The most important thing I missed is the classic Setup/Teardown approach (before
 Usage
 -----
 
-- Download
+Installation
+~~~~~~~~~~~~
+
+- add in your project.clj:
++
+[source,clojure]
+(def project ...
+  :dev-dependencies [[north "0.1.0-SNAPSHOT"] ...]
+  ...)
 
 - ???
 
-- Profit!
+- run lein north
 
 
 License and Copyright
 ---------------------
 
-Copyright (C) 2012 Plinio Balduino
-
 Distributed under the Eclipse Public License, the same as Clojure.
+
+footnote:[Copyright (C) 2012 Plinio Balduino]
