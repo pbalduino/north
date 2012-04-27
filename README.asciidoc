@@ -28,26 +28,37 @@ Usage
 Installation
 ~~~~~~~~~~~~
 
-- add in your project.clj:
+- add in your +project.clj+:
 +
 ---------------------------------------------------
 (def project ...
-  :dev-dependencies [[north "0.1.0-SNAPSHOT"] ...]
+  :dev-dependencies [[north ``0.1.0-SNAPSHOT''] ...]
   ...)
 ---------------------------------------------------
-
-- ???
 
 - run
 +
 ---------------------------------------------------
 lein north
 ---------------------------------------------------
++
+and see no evil.
 
+Writing your first test - (in progress)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+. write a test
+. see it fail
+. write code to make the test pass
+. back to step 1 
+
+Extending North
+~~~~~~~~~~~~~~~
+(in progress)
 
 License and Copyright
 ---------------------
 
 Distributed under the Eclipse Public License, the same as Clojure.
 
-footnote:[Copyright (C) 2012 Plinio Balduino]
+Copyright (C) 2012 Plinio Balduino
