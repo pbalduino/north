@@ -32,7 +32,7 @@ Installation
 +
 ---------------------------------------------------
 (def project ...
-  :dev-dependencies [[north ``0.1.0-SNAPSHOT''] ...]
+  :dev-dependencies [[north "0.1.0-SNAPSHOT"] ...]
   ...)
 ---------------------------------------------------
 
