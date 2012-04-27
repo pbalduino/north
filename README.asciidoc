@@ -4,9 +4,14 @@
 North
 =====
 
+.{revdate}: AsciiDoc {revnumber} Released
+
 What is
 -------
+North is a small test tool based on Dan North and Dave Chelimsky work with JBehave and RSpec.
+It's written in Clojure and is intended to be a simple way and expressive way to write tests using most of RSpec conventions.
 
+The standard Clojure
 
 License and Copyright
 ---------------------
