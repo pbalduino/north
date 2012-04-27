@@ -9,9 +9,26 @@ North
 What is
 -------
 North is a small test tool based on Dan North and Dave Chelimsky work with JBehave and RSpec.
+
 It's written in Clojure and is intended to be a simple way and expressive way to write tests using most of RSpec conventions.
 
-The standard Clojure
+Why
+---
+The standard Clojure test tool is test-is and sometimes it looks quite incomplete. 
+
+Even knowing that Functional Programming should rely on immutability and absence of side effects, in the real world the things don't work so clean and smooth.
+
+The most important thing I missed is the classic Setup/Teardown approach (before/after from RSpec), because I need to set the environment before the test execution and then clean up the mess (as I said, side effects do exist in real world)
+
+Usage
+-----
+
+- Download
+
+- ???
+
+- Profit!
+
 
 License and Copyright
 ---------------------
