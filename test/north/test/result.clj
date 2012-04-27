@@ -20,10 +20,10 @@
 			:name "Default" 
 			:test-list [(struct-map test-struct 
 							:name "Sample test" 
-							:fun #{println "Uhu!"})
+							:fun #(println "Uhu!"))
 						(struct-map test-struct 
 							:name "Another test" 
-							:fun #{println "Another test"})])]))
+							:fun #(println "Another test"))])]))
 
 (println (str "Feature: " (:name suite-struct)))
 (dorun
@@ -34,7 +34,7 @@
 			(map 
 				(fn [y] 
 					(println (str "    " (:name y)))
-					(println (str "    Executing:"))
+					(println "    Executing:")
 					((:fun y)))
 				(:test-list x)))
 		(println ""))
