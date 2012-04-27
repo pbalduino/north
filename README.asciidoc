@@ -28,14 +28,19 @@ Installation
 
 - add in your project.clj:
 +
-[source,clojure]
+---------------------------------------------------
 (def project ...
   :dev-dependencies [[north "0.1.0-SNAPSHOT"] ...]
   ...)
+---------------------------------------------------
 
 - ???
 
-- run lein north
+- run
++
+---------------------------------------------------
+lein north
+---------------------------------------------------
 
 
 License and Copyright
