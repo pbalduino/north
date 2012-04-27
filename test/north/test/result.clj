@@ -13,14 +13,29 @@
 (defstruct context-struct :name :test-list)
 (defstruct test-struct :name :fun)
 
-(pprint
-	(struct-map suite-struct "Feature name" 
-		[(struct-map context-struct "Default" 
-			[(struct-map test-struct "Sample test" #{println "Uhu!"})
-			 (struct-map test-struct "Another test" #{println "Another test"})
-		  ]
-	  )]
-  )
-)
+(def tests
+	(struct-map suite-struct 
+		:name "Feature name" 
+		:context-list [(struct-map context-struct 
+			:name "Default" 
+			:test-list [(struct-map test-struct 
+							:name "Sample test" 
+							:fun #(println "Uhu!"))
+						(struct-map test-struct 
+							:name "Another test" 
+							:fun #(println "Another test"))])]))
 
-(pprint suite-struct)
+(println (str "Feature: " (:name suite-struct)))
+(dorun
+	(map (fn [x]
+		(println (str "  Context: " (:name x)))
+		(println "  Tests:")
+		(dorun 
+			(map 
+				(fn [y] 
+					(println (str "    " (:name y)))
+					(println "    Executing:")
+					((:fun y)))
+				(:test-list x)))
+		(println ""))
+	(:context-list tests)))
