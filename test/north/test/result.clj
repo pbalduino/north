@@ -17,25 +17,36 @@
 	(struct-map suite-struct 
 		:name "Feature name" 
 		:context-list [(struct-map context-struct 
-			:name "Default" 
+			:name "In some strange context" 
 			:test-list [(struct-map test-struct 
-							:name "Sample test" 
-							:fun #(println "Uhu!"))
+							:name "it should do this" 
+							:fun #(println "--> Uhu!"))
 						(struct-map test-struct 
-							:name "Another test" 
-							:fun #(println "Another test"))])]))
+							:name "and it should do that" 
+							:fun #(println "--> Another test"))])]))
 
-(println (str "Feature: " (:name suite-struct)))
+(def test-count (let [count (ref 0)] #(dosync (alter count inc))))
+(def ok-count   (let [count (ref 0)] #(dosync (alter count inc))))
+(def fail-count (let [count (ref 0)] #(dosync (alter count inc))))
+
+(println "Running tests")
 (dorun
 	(map (fn [x]
-		(println (str "  Context: " (:name x)))
-		(println "  Tests:")
 		(dorun 
 			(map 
 				(fn [y] 
-					(println (str "    " (:name y)))
-					(println "    Executing:")
-					((:fun y)))
-				(:test-list x)))
-		(println ""))
+					(println (str (:name tests) ": " (:name x) " " (:name y)))
+					(test-count)
+					(try
+						(do
+							((:fun y))
+							(println "OK\n")
+							(ok-count))
+						(catch Exception e
+							(println "Error")
+							(fail-count)
+							(.printStackTrace e))))
+				(:test-list x))))
 	(:context-list tests)))
+(println (str "Ran " (dec (test-count)) " tests with 0 assertions"))
+(println (str (dec (ok-count)) " passed and " (dec (fail-count)) " failed."))	
