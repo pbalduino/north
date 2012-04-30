@@ -8,6 +8,7 @@
 (def test-count (let [count (ref 0)] #(dosync (alter count inc))))
 (def ok-count   (let [count (ref 0)] #(dosync (alter count inc))))
 (def fail-count (let [count (ref 0)] #(dosync (alter count inc))))
+(def assertion-count (let [count (ref 0)] #(dosync (alter count inc))))
 
 (defstruct suite-struct :name :context-list :before-all :before-each :after-all :after-each)
 (defstruct context-struct :name :test-list :before-all :before-each :after-all :after-each)
@@ -33,18 +34,19 @@
 
 (defn should
   ([result matcher]
-    (matcher result))
+    (matcher result)
+    (assertion-count))
   ([result matcher expectation]
-    (matcher result expectation)))
+    (matcher result expectation)
+    (assertion-count)))
 
 (defn- verify [result expectation operation description]
-;  (assert 
-;    (operation result expectation)
-;    (format "Assertion failed. %s was expected to be %s %s" 
-;            result 
-;            description 
-;            expectation)))
-            )
+  (assert
+    (operation result expectation)
+    (format "Assertion failed. %s was expected to be %s %s" 
+            result 
+            description 
+            expectation)))
 
 (defn be-not-equals [result expectation]
   (verify result expectation not= "different than"))
@@ -86,5 +88,5 @@
               (.printStackTrace e))))
         (:test-list x))))
   (:context-list spec-list)))
-(println (str "Ran " (dec (test-count)) " tests with 0 assertions"))
+(println (str "Ran " (dec (test-count)) " test(s) with " (dec (assertion-count)) " assertion(s)"))
 (println (str (dec (ok-count)) " passed and " (dec (fail-count)) " failed.")))
