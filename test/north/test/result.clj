@@ -9,8 +9,8 @@
 	(binding [test-list (assoc test-list "Feature name" {})]
 		(println test-list)))
 
-(defstruct suite-struct :name :context-list)
-(defstruct context-struct :name :test-list)
+(defstruct suite-struct :name :context-list :before-all :before-each :after-all :after-each)
+(defstruct context-struct :name :test-list :before-all :before-each :after-all :after-each)
 (defstruct test-struct :name :fun)
 
 (def tests
@@ -28,6 +28,8 @@
 (def test-count (let [count (ref 0)] #(dosync (alter count inc))))
 (def ok-count   (let [count (ref 0)] #(dosync (alter count inc))))
 (def fail-count (let [count (ref 0)] #(dosync (alter count inc))))
+
+(pprint tests)
 
 (println "Running tests")
 (dorun
@@ -49,4 +51,4 @@
 				(:test-list x))))
 	(:context-list tests)))
 (println (str "Ran " (dec (test-count)) " tests with 0 assertions"))
-(println (str (dec (ok-count)) " passed and " (dec (fail-count)) " failed."))	
+(println (str (dec (ok-count)) " passed and " (dec (fail-count)) " failed."))

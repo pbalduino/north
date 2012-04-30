@@ -3,25 +3,33 @@
 
 (set! *warn-on-reflection* true)
 
-(def run-specs #())
-(def ^:dynamic test-list {})
+(def spec-list {})
+
+(def test-count (let [count (ref 0)] #(dosync (alter count inc))))
+(def ok-count   (let [count (ref 0)] #(dosync (alter count inc))))
+(def fail-count (let [count (ref 0)] #(dosync (alter count inc))))
+
+(defstruct suite-struct :name :context-list :before-all :before-each :after-all :after-each)
+(defstruct context-struct :name :test-list :before-all :before-each :after-all :after-each)
+(defstruct test-struct :name :fun)
 
 (defmacro describe [feature & body]
   `(binding [*ns* (find-ns 'north.core)]
-     (println *ns*)
      (eval 
-       '(defn run-specs []
-          (binding [test-list (assoc test-list (str ~feature) {})]
-            (println "running")
-            (println test-list)
-            (~@body)
-            (println "finished"))))))
+       '(def spec-list
+            (struct-map suite-struct
+              :name (str ~feature)
+              :context-list [~@body])))))
 
 (defmacro context [description & body]
-  `(println "Ending context"))
+  `(struct-map context-struct 
+      :name (str ~description) 
+      :test-list [~@body]))
 
 (defmacro it [description & body]
-  `(println "Ending it"))
+  `(struct-map test-struct 
+      :name (str ~description)
+      :fun #(do ~@body)))
 
 (defn should
   ([result matcher]
@@ -54,3 +62,29 @@
 
 (defn be-false [result]
   (be-equals result false))
+
+(defn run-specs-2[]
+  (println "Showing specs")
+  (pprint spec-list))
+
+(defn run-specs[]
+  (dorun
+  (map (fn [x]
+    (dorun 
+      (map 
+        (fn [y] 
+          (println (str (:name spec-list) ": " (:name x) " " (:name y)))
+          (test-count)
+          (try
+            (do
+              ((:fun y))
+              (println "OK\n")
+              (ok-count))
+            (catch Exception e
+              (println "Error")
+              (fail-count)
+              (.printStackTrace e))))
+        (:test-list x))))
+  (:context-list spec-list)))
+(println (str "Ran " (dec (test-count)) " tests with 0 assertions"))
+(println (str (dec (ok-count)) " passed and " (dec (fail-count)) " failed.")))
