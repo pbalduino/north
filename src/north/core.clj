@@ -15,12 +15,10 @@
 (defstruct test-struct :name :fun)
 
 (defmacro describe [feature & body]
-  `(binding [*ns* (find-ns 'north.core)]
-     (eval 
-       '(def spec-list
-            (struct-map suite-struct
+  `(let [bleh (struct-map suite-struct
               :name (str ~feature)
-              :context-list [~@body])))))
+              :context-list [~@body])]
+    (pprint bleh)))
 
 (defmacro context [description & body]
   `(struct-map context-struct 
